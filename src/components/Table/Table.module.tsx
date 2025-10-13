@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from "react";
-import Pagination from "../Pagination";
-import { getDataByPage } from "../Pagination/Pagination";
+import Pagination from "./Pagination";
+import { getDataByPage } from "./Pagination/Pagination";
 import { useTableContext } from "./Table.context";
 import type { ITableModule } from "./Table.wrapper";
 export const PAGE_SIZE = 3;
