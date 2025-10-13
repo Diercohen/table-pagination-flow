@@ -1,4 +1,4 @@
-import { useEffect, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import Pagination from "../Pagination";
 import { getDataByPage } from "../Pagination/Pagination";
 import { useTableContext } from "./Table.context";
@@ -6,15 +6,16 @@ import type { ITableModule } from "./Table.wrapper";
 export const PAGE_SIZE = 3;
 
 const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
-  const { data, setData, setTotalCount, page } = useTableContext();
+  const { allData, setTotalCount, page } = useTableContext();
+  const [currentData, setCurrentData] = useState(allData);
 
   useEffect(() => {
     setTotalCount(wholeData.length);
-    return setData(getDataByPage(wholeData, 1));
+    return setCurrentData(getDataByPage(wholeData, 1));
   }, []);
 
   useEffect(() => {
-    return setData(getDataByPage(wholeData, page));
+    return setCurrentData(getDataByPage(wholeData, page));
   }, [page]);
 
   return (
@@ -28,7 +29,7 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((row) => {
+        {currentData.map((row) => {
           return (
             <tr>
               {Object.values(row).map((val) => {

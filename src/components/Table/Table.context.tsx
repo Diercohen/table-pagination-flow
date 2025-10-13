@@ -9,8 +9,8 @@ import type { DataType } from "../../data";
 
 interface ITableContextProps {
   // allData: RefObject<DataType[]>;
-  data: DataType[];
-  setData: React.Dispatch<React.SetStateAction<DataType[]>>;
+  allData: DataType[];
+  setAllData: React.Dispatch<React.SetStateAction<DataType[]>>;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   totalCount: number;
@@ -18,15 +18,15 @@ interface ITableContextProps {
 }
 const TableContext = createContext<ITableContextProps>({
   // allData: { current: [] },
-  data: [],
-  setData: () => undefined,
+  allData: [],
+  setAllData: () => undefined,
   page: 1,
   setPage: () => undefined,
   totalCount: 1,
   setTotalCount: () => undefined,
 });
 export const TableProvider: FC<PropsWithChildren> = ({ children }) => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [allData, setAllData] = useState<DataType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalCount, setTotalCount] = useState<number>(0);
   // const allData = useRef<DataType[]>([]);
@@ -34,8 +34,8 @@ export const TableProvider: FC<PropsWithChildren> = ({ children }) => {
     // allData,
     setTotalCount,
     totalCount,
-    data,
-    setData,
+    allData,
+    setAllData,
     page,
     setPage,
   };
