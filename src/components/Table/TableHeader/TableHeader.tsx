@@ -1,7 +1,11 @@
 import { type FC } from "react";
+import type { ColumnType } from "../../../data";
 import { useTableContext } from "../Table.context";
 
-const TableHeader: FC = () => {
+interface ITableHeaderProps {
+  columns: ColumnType[];
+}
+const TableHeader: FC<ITableHeaderProps> = ({ columns }) => {
   const { query, setQuery } = useTableContext();
 
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
@@ -18,6 +22,12 @@ const TableHeader: FC = () => {
         onChange={queryOnChange}
         value={query}
       />
+      <tr>
+        <th>#</th>
+        {columns.map((currentCol) => (
+          <th>{currentCol.label}</th>
+        ))}
+      </tr>
     </>
   );
 };

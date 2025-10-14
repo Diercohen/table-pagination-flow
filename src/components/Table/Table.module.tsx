@@ -33,13 +33,7 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
   return (
     <table>
       <thead>
-        <TableHeader />
-        <tr>
-          <th>#</th>
-          {column.map((currentCol) => (
-            <th>{currentCol.label}</th>
-          ))}
-        </tr>
+        <TableHeader columns={column} />
       </thead>
       <tbody>
         {currentData.map((row) => {
