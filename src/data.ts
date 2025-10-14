@@ -23,7 +23,7 @@ export const data: DataType[] = [
 export type ColumnType = {
   label: string;
   key: string;
-  cellType: string;
+  cellType: "text" | "number";
 };
 export const column: ColumnType[] = [
   { label: "Name", key: "name", cellType: "text" },

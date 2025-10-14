@@ -25,7 +25,9 @@ const TableHeader: FC<ITableHeaderProps> = ({ columns }) => {
       <tr>
         <th>#</th>
         {columns.map((currentCol) => (
-          <th>{currentCol.label}</th>
+          <th>
+            {currentCol.label} {currentCol.cellType}
+          </th>
         ))}
       </tr>
     </>
