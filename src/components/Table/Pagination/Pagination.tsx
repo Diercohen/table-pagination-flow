@@ -8,7 +8,7 @@ export const getDataByPage = (commingData: DataType[], page: number) => {
 };
 
 const Pagination: FC = () => {
-  const { setPage, totalCount } = useTableContext();
+  const { setPage, totalCount, page } = useTableContext();
 
   const pageCount = useMemo(() => {
     return Math.ceil(totalCount / PAGE_SIZE);
@@ -16,6 +16,18 @@ const Pagination: FC = () => {
 
   return (
     <>
+      <b
+        style={{
+          cursor: "pointer",
+          pointerEvents: page == 1 ? "none" : "auto",
+          color: page == 1 ? "gray" : "black",
+        }}
+        onClick={() => {
+          setPage((prevPage) => prevPage - 1);
+        }}
+      >
+        PREV
+      </b>
       {Array(pageCount)
         .fill("")
         .map((_, index) => {
@@ -24,12 +36,28 @@ const Pagination: FC = () => {
               onClick={() => {
                 setPage(index + 1);
               }}
-              style={{ marginInline: 4 }}
+              style={{
+                cursor: "pointer",
+                marginInline: 4,
+                textDecoration: page == index + 1 ? "underline" : "",
+              }}
             >
               {index + 1}
             </b>
           );
         })}
+      <b
+        style={{
+          cursor: "pointer",
+          pointerEvents: page == pageCount ? "none" : "auto",
+          color: page == pageCount ? "gray" : "black",
+        }}
+        onClick={() => {
+          setPage((prevPage) => prevPage + 1);
+        }}
+      >
+        NEXT
+      </b>
     </>
   );
 };
