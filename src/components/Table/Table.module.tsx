@@ -33,7 +33,7 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
   return (
     <table>
       <thead>
-        <TableHeader columns={column} />
+        <TableHeader columns={column} sortableColumnsKey={["name", "age"]} />
       </thead>
       <tbody>
         {currentData.map((row) => {

@@ -4,6 +4,7 @@ export type DataType = {
   email: string;
   age: number;
 };
+
 export const data: DataType[] = [
   { id: 1, name: "Alice Johnson", email: "alice@example.com", age: 28 },
   { id: 2, name: "Bob Smith", email: "bob@example.com", age: 34 },
@@ -25,6 +26,7 @@ export type ColumnType = {
   key: string;
   cellType: "text" | "number";
 };
+
 export const column: ColumnType[] = [
   { label: "Name", key: "name", cellType: "text" },
   { label: "Email", key: "email", cellType: "text" },

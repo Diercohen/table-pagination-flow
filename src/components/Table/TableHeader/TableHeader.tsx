@@ -4,8 +4,12 @@ import { useTableContext } from "../Table.context";
 
 interface ITableHeaderProps {
   columns: ColumnType[];
+  sortableColumnsKey?: string[];
 }
-const TableHeader: FC<ITableHeaderProps> = ({ columns }) => {
+const TableHeader: FC<ITableHeaderProps> = ({
+  columns,
+  sortableColumnsKey,
+}) => {
   const { query, setQuery } = useTableContext();
 
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
@@ -26,7 +30,8 @@ const TableHeader: FC<ITableHeaderProps> = ({ columns }) => {
         <th>#</th>
         {columns.map((currentCol) => (
           <th>
-            {currentCol.label} {currentCol.cellType}
+            {currentCol.label}
+            {sortableColumnsKey?.includes(currentCol.key) && <b>SORT</b>}
           </th>
         ))}
       </tr>
