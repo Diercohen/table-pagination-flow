@@ -30,18 +30,24 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
           .includes(query);
       })
       .sort((A_DataType, B_DataType) => {
-        if (sortBy) {
-          let x = (A_DataType as any)?.[sortBy];
-          let y = (B_DataType as any)?.[sortBy];
+        let sortDiscendingIndicator: number = 1;
+        const sortByKey = String(sortBy).replace("-", "");
+        if (sortBy.startsWith("-")) {
+          sortDiscendingIndicator = -1;
+        }
+
+        if (sortByKey) {
+          let x = (A_DataType as any)?.[sortByKey];
+          let y = (B_DataType as any)?.[sortByKey];
           if (typeof x == "string") {
             x = x?.toLowerCase();
             y = y?.toLowerCase();
           }
           if (x < y) {
-            return -1;
+            return -1 * sortDiscendingIndicator;
           }
           if (x > y) {
-            return 1;
+            return 1 * sortDiscendingIndicator;
           }
           return 0;
         }
