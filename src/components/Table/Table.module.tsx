@@ -7,7 +7,7 @@ import TableHeader from "./TableHeader";
 export const PAGE_SIZE = 3;
 
 const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
-  const { allData, setTotalCount, page, query } = useTableContext();
+  const { allData, setTotalCount, page, query, sortBy } = useTableContext();
   const [currentData, setCurrentData] = useState(allData);
 
   useEffect(() => {
@@ -23,12 +23,33 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
     if (query.trim() === "") {
       setCurrentData(wholeData);
     }
-    const refinedData = wholeData.filter((data) => {
-      return String(data.name).toLowerCase().includes(query);
-    });
+    const refinedData = wholeData
+      .filter((data) => {
+        return String(data.name + data.email)
+          .toLowerCase()
+          .includes(query);
+      })
+      .sort((A_DataType, B_DataType) => {
+        if (sortBy) {
+          let x = (A_DataType as any)?.[sortBy];
+          let y = (B_DataType as any)?.[sortBy];
+          if (typeof x == "string") {
+            x = x?.toLowerCase();
+            y = y?.toLowerCase();
+          }
+          if (x < y) {
+            return -1;
+          }
+          if (x > y) {
+            return 1;
+          }
+          return 0;
+        }
+        return 0;
+      });
     setTotalCount(refinedData.length);
     setCurrentData(getDataByPage(refinedData, page));
-  }, [query, page]);
+  }, [query, page, sortBy]);
 
   return (
     <table>
