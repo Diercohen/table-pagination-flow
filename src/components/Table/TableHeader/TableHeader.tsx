@@ -42,9 +42,10 @@ const TableHeader: FC<ITableHeaderProps> = ({
               }}
             >
               {currentCol.label}
-              {sortableColumnsKey?.includes(currentCol.key) && (
-                <b>({isDescending ? "DESC" : "ASC"})</b>
-              )}
+              {sortableColumnsKey?.includes(currentCol.key) &&
+                sortBy.includes(currentCol.key) && (
+                  <b>({isDescending ? "DESC" : "ASC"})</b>
+                )}
             </th>
           );
         })}
