@@ -10,7 +10,7 @@ const TableHeader: FC<ITableHeaderProps> = ({
   columns,
   sortableColumnsKey,
 }) => {
-  const { query, setQuery } = useTableContext();
+  const { query, setQuery, sortBy, setSortBy } = useTableContext();
 
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
@@ -28,12 +28,26 @@ const TableHeader: FC<ITableHeaderProps> = ({
       />
       <tr>
         <th>#</th>
-        {columns.map((currentCol) => (
-          <th>
-            {currentCol.label}
-            {sortableColumnsKey?.includes(currentCol.key) && <b>SORT</b>}
-          </th>
-        ))}
+        {columns.map((currentCol) => {
+          const isDescending = sortBy.startsWith("-");
+          return (
+            <th
+              onClick={() => {
+                if (sortBy !== currentCol.key) {
+                  return setSortBy(currentCol.key);
+                }
+                return setSortBy(
+                  isDescending ? currentCol.key : "-" + currentCol.key
+                );
+              }}
+            >
+              {currentCol.label}
+              {sortableColumnsKey?.includes(currentCol.key) && (
+                <b>({isDescending ? "DESC" : "ASC"})</b>
+              )}
+            </th>
+          );
+        })}
       </tr>
     </>
   );
