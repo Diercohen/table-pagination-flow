@@ -1,10 +1,9 @@
 import { useEffect, useState, type FC } from "react";
+import { getDataByPage } from "../../utils";
 import Pagination from "./Pagination";
-import { getDataByPage } from "./Pagination/Pagination";
 import { useTableContext } from "./Table.context";
 import type { ITableModule } from "./Table.wrapper";
 import TableHeader from "./TableHeader";
-export const PAGE_SIZE = 3;
 
 const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
   const { allData, setTotalCount, page, query, sortBy } = useTableContext();
