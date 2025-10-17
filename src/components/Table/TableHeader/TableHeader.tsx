@@ -1,5 +1,6 @@
-import { type FC } from "react";
+import { useState, type FC } from "react";
 import type { ColumnType } from "../../../data";
+import { debounce } from "../../../utils";
 import { useTableContext } from "../Table.context";
 
 interface ITableHeaderProps {
@@ -10,12 +11,14 @@ const TableHeader: FC<ITableHeaderProps> = ({
   columns,
   sortableColumnsKey,
 }) => {
-  const { query, setQuery, sortBy, setSortBy } = useTableContext();
-
+  const { setQuery, sortBy, setSortBy } = useTableContext();
+  const [currentQuery, setCurentQuery] = useState("");
+  const debouncedQuery = debounce(setQuery, 2000);
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
   }) => {
-    setQuery(value ?? "");
+    setCurentQuery(value ?? "");
+    debouncedQuery(value ?? "");
   };
   return (
     <>
@@ -24,7 +27,7 @@ const TableHeader: FC<ITableHeaderProps> = ({
         name="query"
         placeholder="query"
         onChange={queryOnChange}
-        value={query}
+        value={currentQuery}
       />
       <tr>
         <th>#</th>
