@@ -13,7 +13,7 @@ const TableHeader: FC<ITableHeaderProps> = ({
 }) => {
   const { setQuery, sortBy, setSortBy } = useTableContext();
   const [currentQuery, setCurentQuery] = useState("");
-  const debouncedQuery = debounce(setQuery, 2000);
+  const debouncedQuery = debounce(setQuery, 200);
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
   }) => {
