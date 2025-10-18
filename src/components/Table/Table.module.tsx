@@ -7,7 +7,8 @@ import type { ITableModule } from "./Table.wrapper";
 import TableHeader from "./TableHeader";
 
 const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
-  const { allData, setTotalCount, page, query, sortBy } = useTableContext();
+  const { allData, setTotalCount, page, query, sortBy, setLoading, loading } =
+    useTableContext();
   const [currentData, setCurrentData] = useState(allData);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
   const mockDataFetcher: (commingQuery: string) => Promise<DataType[]> = (
     commingQuery: string
   ) => {
+    setLoading(true);
     return new Promise((resolve) => {
       setTimeout(() => {
         if (commingQuery.trim() === "") {
@@ -56,6 +58,7 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
             }
             return 0;
           });
+        setLoading(false);
         resolve(refinedData);
       }, 1000);
     });
@@ -73,15 +76,17 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
         <TableHeader columns={column} sortableColumnsKey={["name", "age"]} />
       </thead>
       <tbody>
-        {currentData.map((row) => {
-          return (
-            <tr>
-              {Object.values(row).map((val) => {
-                return <td>{val}</td>;
-              })}
-            </tr>
-          );
-        })}
+        {loading && <b>LOADING...</b>}
+        {!loading &&
+          currentData.map((row) => {
+            return (
+              <tr>
+                {Object.values(row).map((val) => {
+                  return <td>{val}</td>;
+                })}
+              </tr>
+            );
+          })}
       </tbody>
       <tfoot>
         <Pagination />
