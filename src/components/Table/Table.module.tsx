@@ -7,8 +7,16 @@ import type { ITableModule } from "./Table.wrapper";
 import TableHeader from "./TableHeader";
 
 const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
-  const { allData, setTotalCount, page, query, sortBy, setLoading, loading } =
-    useTableContext();
+  const {
+    allData,
+    totalCount,
+    setTotalCount,
+    page,
+    query,
+    sortBy,
+    setLoading,
+    loading,
+  } = useTableContext();
   const [currentData, setCurrentData] = useState(allData);
 
   useEffect(() => {
@@ -76,7 +84,10 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
         <TableHeader columns={column} sortableColumnsKey={["name", "age"]} />
       </thead>
       <tbody>
-        {loading && <b>LOADING...</b>}
+        {loading && <b style={{ color: "yellowgreen" }}>LOADING...</b>}
+        {!loading && totalCount === 0 && (
+          <b style={{ color: "tomato" }}>NO ITEM FOUND</b>
+        )}
         {!loading &&
           currentData.map((row) => {
             return (
