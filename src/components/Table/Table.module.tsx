@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC } from "react";
+import type { DataType } from "../../data";
 import { getDataByPage } from "../../utils";
 import Pagination from "./Pagination";
 import { useTableContext } from "./Table.context";
@@ -17,43 +18,53 @@ const TableModule: FC<ITableModule> = ({ data: wholeData, column }) => {
   useEffect(() => {
     return setCurrentData(getDataByPage(wholeData, page));
   }, [page]);
+  const mockDataFetcher: (commingQuery: string) => Promise<DataType[]> = (
+    commingQuery: string
+  ) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (commingQuery.trim() === "") {
+          setCurrentData(wholeData);
+        }
+        const refinedData = wholeData
+          .filter((data) => {
+            return String(data.name + data.email)
+              .toLowerCase()
+              .includes(query);
+          })
+          .sort((A_DataType, B_DataType) => {
+            let sortDiscendingIndicator: number = 1;
+            const sortByKey = String(sortBy).replace("-", "");
+            if (sortBy.startsWith("-")) {
+              sortDiscendingIndicator = -1;
+            }
 
+            if (sortByKey) {
+              let x = (A_DataType as any)?.[sortByKey];
+              let y = (B_DataType as any)?.[sortByKey];
+              if (typeof x == "string") {
+                x = x?.toLowerCase();
+                y = y?.toLowerCase();
+              }
+              if (x < y) {
+                return -1 * sortDiscendingIndicator;
+              }
+              if (x > y) {
+                return 1 * sortDiscendingIndicator;
+              }
+              return 0;
+            }
+            return 0;
+          });
+        resolve(refinedData);
+      }, 1000);
+    });
+  };
   useEffect(() => {
-    if (query.trim() === "") {
-      setCurrentData(wholeData);
-    }
-    const refinedData = wholeData
-      .filter((data) => {
-        return String(data.name + data.email)
-          .toLowerCase()
-          .includes(query);
-      })
-      .sort((A_DataType, B_DataType) => {
-        let sortDiscendingIndicator: number = 1;
-        const sortByKey = String(sortBy).replace("-", "");
-        if (sortBy.startsWith("-")) {
-          sortDiscendingIndicator = -1;
-        }
-
-        if (sortByKey) {
-          let x = (A_DataType as any)?.[sortByKey];
-          let y = (B_DataType as any)?.[sortByKey];
-          if (typeof x == "string") {
-            x = x?.toLowerCase();
-            y = y?.toLowerCase();
-          }
-          if (x < y) {
-            return -1 * sortDiscendingIndicator;
-          }
-          if (x > y) {
-            return 1 * sortDiscendingIndicator;
-          }
-          return 0;
-        }
-        return 0;
-      });
-    setTotalCount(refinedData.length);
-    setCurrentData(getDataByPage(refinedData, page));
+    mockDataFetcher(query).then((refinedData) => {
+      setTotalCount(refinedData.length);
+      setCurrentData(getDataByPage(refinedData, page));
+    });
   }, [query, page, sortBy]);
 
   return (
