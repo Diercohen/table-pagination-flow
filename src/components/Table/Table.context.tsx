@@ -10,6 +10,8 @@ import type { DataType } from "../../data";
 interface ITableContextProps {
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sortBy: string;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   allData: DataType[];
@@ -21,6 +23,8 @@ interface ITableContextProps {
 }
 
 const TableContext = createContext<ITableContextProps>({
+  loading: false,
+  setLoading: () => undefined,
   query: "",
   setQuery: () => undefined,
   sortBy: "",
@@ -36,10 +40,13 @@ const TableContext = createContext<ITableContextProps>({
 export const TableProvider: FC<PropsWithChildren> = ({ children }) => {
   const [allData, setAllData] = useState<DataType[]>([]);
   const [page, setPage] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>("");
   const [totalCount, setTotalCount] = useState<number>(0);
   const [query, setQuery] = useState<string>("");
   const value: ITableContextProps = {
+    loading,
+    setLoading,
     sortBy,
     setSortBy,
     query,
