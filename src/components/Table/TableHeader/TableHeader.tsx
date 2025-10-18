@@ -17,8 +17,9 @@ const TableHeader: FC<ITableHeaderProps> = ({
   const queryOnChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
   }) => {
-    setCurentQuery(value ?? "");
-    debouncedQuery(value ?? "");
+    const queryValue = String(value ?? "").toLowerCase();
+    setCurentQuery(queryValue);
+    debouncedQuery(queryValue);
   };
   return (
     <>
